@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>ストップウォッチ（トグルボタン版）</title>
+    <title>ストップウォッチ（記録機能付き）</title>
     <style>
         body {
             font-family: sans-serif;
@@ -10,16 +10,17 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             background-color: #f4f4f9;
         }
         .container {
             text-align: center;
             background: white;
-            padding: 40px;
+            padding: 30px;
             border-radius: 12px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 300px;
         }
         #timer {
             font-size: 48px;
@@ -39,6 +40,35 @@
         #startStopBtn { background-color: #28a745; }
         #resetBtn { background-color: #6c757d; }
         button:hover { opacity: 0.8; }
+
+        /* 記録エリアのスタイル */
+        .records {
+            margin-top: 25px;
+            text-align: left;
+            border-top: 2px solid #f0f0f0;
+            padding-top: 15px;
+        }
+        .records h3 {
+            font-size: 14px;
+            margin: 0 0 10px 0;
+            color: #666;
+            text-align: center;
+        }
+        .records ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 150px;
+            overflow-y: auto; /* 履歴が増えたらスクロールを表示 */
+        }
+        .records li {
+            padding: 6px 12px;
+            border-bottom: 1px solid #f9f9f9;
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+            color: #444;
+        }
     </style>
 </head>
 <body>
@@ -46,9 +76,14 @@
     <div class="container">
         <div id="timer">00:00:00</div>
         <div class="buttons">
-            <!-- スタートとストップを兼ねるボタン -->
             <button id="startStopBtn" onclick="toggleTimer()">スタート</button>
             <button id="resetBtn" onclick="resetTimer()">リセット</button>
+        </div>
+
+        <!-- 計測履歴を表示するエリア -->
+        <div class="records">
+            <h3>計測履歴</h3>
+            <ul id="recordList"></ul>
         </div>
     </div>
 
@@ -57,6 +92,7 @@
         let elapsedTime = 0;
         let timerInterval;
         let isRunning = false;
+        let recordCount = 0;
 
         function printTime(txt) {
             document.getElementById("timer").innerHTML = txt;
@@ -81,7 +117,6 @@
             return `${formattedMM}:${formattedSS}:${formattedMS}`;
         }
 
-        // スタートとストップを切り替える関数
         function toggleTimer() {
             const btn = document.getElementById("startStopBtn");
 
@@ -95,14 +130,28 @@
 
                 isRunning = true;
                 btn.textContent = "ストップ";
-                btn.style.backgroundColor = "#dc3545"; // 赤色
+                btn.style.backgroundColor = "#dc3545";
             } else {
                 // ストップ処理
                 clearInterval(timerInterval);
                 isRunning = false;
                 btn.textContent = "スタート";
-                btn.style.backgroundColor = "#28a745"; // 緑色
+                btn.style.backgroundColor = "#28a745";
+
+                // ★ストップを押した時のタイムをリストに追加
+                addRecord(timeToString(elapsedTime));
             }
+        }
+
+        // 記録をリストに追加する関数
+        function addRecord(timeStr) {
+            recordCount++;
+            const recordList = document.getElementById("recordList");
+            const li = document.createElement("li");
+            li.innerHTML = `<span>記録 #${recordCount}</span> <span><strong>${timeStr}</strong></span>`;
+            
+            // 最新の記録が一番上にくるように追加
+            recordList.prepend(li);
         }
 
         function resetTimer() {
@@ -110,11 +159,14 @@
             printTime("00:00:00");
             elapsedTime = 0;
             isRunning = false;
+            recordCount = 0;
 
-            // ボタンの表示も初期状態に戻す
             const btn = document.getElementById("startStopBtn");
             btn.textContent = "スタート";
             btn.style.backgroundColor = "#28a745";
+
+            // リセット時に履歴も全消去
+            document.getElementById("recordList").innerHTML = "";
         }
     </script>
 
