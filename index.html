@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>ストップウォッチ</title>
+    <title>ストップウォッチ（トグルボタン版）</title>
     <style>
         body {
             font-family: sans-serif;
@@ -36,8 +36,7 @@
             border-radius: 6px;
             color: white;
         }
-        #startBtn { background-color: #28a745; }
-        #stopBtn { background-color: #dc3545; }
+        #startStopBtn { background-color: #28a745; }
         #resetBtn { background-color: #6c757d; }
         button:hover { opacity: 0.8; }
     </style>
@@ -47,8 +46,8 @@
     <div class="container">
         <div id="timer">00:00:00</div>
         <div class="buttons">
-            <button id="startBtn" onclick="startTimer()">スタート</button>
-            <button id="stopBtn" onclick="stopTimer()">ストップ</button>
+            <!-- スタートとストップを兼ねるボタン -->
+            <button id="startStopBtn" onclick="toggleTimer()">スタート</button>
             <button id="resetBtn" onclick="resetTimer()">リセット</button>
         </div>
     </div>
@@ -82,21 +81,27 @@
             return `${formattedMM}:${formattedSS}:${formattedMS}`;
         }
 
-        function startTimer() {
+        // スタートとストップを切り替える関数
+        function toggleTimer() {
+            const btn = document.getElementById("startStopBtn");
+
             if (!isRunning) {
+                // スタート処理
                 startTime = Date.now() - elapsedTime;
                 timerInterval = setInterval(function() {
                     elapsedTime = Date.now() - startTime;
                     printTime(timeToString(elapsedTime));
                 }, 10);
-                isRunning = true;
-            }
-        }
 
-        function stopTimer() {
-            if (isRunning) {
+                isRunning = true;
+                btn.textContent = "ストップ";
+                btn.style.backgroundColor = "#dc3545"; // 赤色
+            } else {
+                // ストップ処理
                 clearInterval(timerInterval);
                 isRunning = false;
+                btn.textContent = "スタート";
+                btn.style.backgroundColor = "#28a745"; // 緑色
             }
         }
 
@@ -105,6 +110,11 @@
             printTime("00:00:00");
             elapsedTime = 0;
             isRunning = false;
+
+            // ボタンの表示も初期状態に戻す
+            const btn = document.getElementById("startStopBtn");
+            btn.textContent = "スタート";
+            btn.style.backgroundColor = "#28a745";
         }
     </script>
 
