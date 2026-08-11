@@ -1,782 +1,112 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-  <title>写真の画像解像度 確認オンラインツール(無料)</title>
-  <meta name="description" content="jpgなどの写真の解像度（dpi）をオンラインで調べることができる確認ツール（フリーソフト）です。無料でお使いいただけます。印刷や看板のデザイン制作時に写真を使う場合、画像が荒れてしまわないか解像度が分かれば事前に確認することができます。" />
-  <link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
-    
-<link rel="preconnect" href="https://cdn.signmall.jp/">
-
-
-<link rel="stylesheet" href="https://cdn.signmall.jp/assets/css/common-bundle.min.css?v=20260729">
-<link rel="stylesheet" href="/assets/css/icon/icon.min.css?v=20260729">
-<script defer src="https://cdn.signmall.jp/assets/js/vendor/jquery/jquery-3.7.1.min.js?v=20260729"></script>
-
-<link rel="stylesheet" href="https://cdn.signmall.jp/assets/js/vendor/Remodal/dist/remodal-marge.min.css?v=20260729">
-<script defer src="https://cdn.signmall.jp/assets/js/vendor/Remodal/dist/remodal.js?v=20260729"></script>
-
-<script defer src="https://cdn.signmall.jp/assets/js/common.js?v=20260729"></script>
-  <link rel="stylesheet" href="https://cdn.signmall.jp/assets/css/common-extend.min.css?v=20260729">
-    <link rel="stylesheet" href="https://cdn.signmall.jp/assets/css/satellite/style.css?v=20260729">
-    <script defer src="https://cdn.signmall.jp/assets/js/form/image-upload-validator.js?v=20260729"></script>
-    <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"トップ","item":"https://display-sign-stand.com/"},{"@type":"ListItem","position":2,"name":"写真の画像解像度 確認オンラインツール","item":"https://display-sign-stand.com/image_resolution_checker/"}]}
-</script>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-DVHM7F4J0R"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-DVHM7F4J0R');
-</script>  <style>
-  </style>
+    <meta charset="UTF-8">
+    <title>ストップウォッチ</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        #timer {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .buttons button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            color: white;
+        }
+        #startBtn { background-color: #28a745; }
+        #stopBtn { background-color: #dc3545; }
+        #resetBtn { background-color: #6c757d; }
+        button:hover { opacity: 0.8; }
+    </style>
 </head>
-
 <body>
-  <!-- header -->
-<header>
-  <div>
-    <div class="StatGray2 P5T P5B">
-      <div class="Wrapper1000 P">
-        <div class="G100 DispTbl">
-          <div class="G60 DispTblCell VAMid">
-            <p class="FSS80 Ellipsis">スタンド看板の専門店。A型看板、バナースタンド、イーゼル、ポスタースタンドなど豊富に。</p>
-          </div>
-          <div class="G40 DispTblCell VAMid StatW3">
-            <a href="https://www.signmall.jp/top/sign.html" class="Blk FSS80 P3 NextIconBlueSmall Cnt Ellipsis">サインモール スタンド看板・立て看板</a>
-          </div>
+
+    <div class="container">
+        <div id="timer">00:00:00</div>
+        <div class="buttons">
+            <button id="startBtn" onclick="startTimer()">スタート</button>
+            <button id="stopBtn" onclick="stopTimer()">ストップ</button>
+            <button id="resetBtn" onclick="resetTimer()">リセット</button>
         </div>
-      </div>
-    </div>
-  </div>
-  <div class="Wrapper1000 P">
-    <div class="G100 DispTbl P10B">
-      <div class="DispTblCell VAMid W220">
-        <p id="Logo" class="M10T">
-          <a href="/">
-            <img src="https://cdn.signmall.jp/assets/images/satellite/logo/display-sign-stand.png?v=20260729" class="Resp" alt="スタンド看板専門店" id="LogoImage" />
-          </a>
-        </p>
-      </div>
-      <div class="G100 VABtm Rgt">
-        <!-- PC only -->
-        <div class="MenuNav FSS90 M10T SP-Hidden">
-                      <ul class="P3T">
-              <li><span class="disabled FCGray3">無料ツール</span></li>
-                                                <li>
-                    <a href="/rgb_cmyk_converter/"><span class="PI-picture PI-set-blue M5R"></span>RGB→CMYK変換</a>
-                  </li>
-                                  <li>
-                    <a href="/qrcode_generator/"><span class="PI-picture PI-set-blue M5R"></span>QRコード作成</a>
-                  </li>
-                                  <li>
-                    <a href="/image_resolution_checker/"><span class="PI-picture PI-set-blue M5R"></span>解像度確認</a>
-                  </li>
-                                          </ul>
-                    <ul class="M5T">
-                          <li><a href="/topic/"><span class="PI-set-blue PI-info-sign P5R"></span>看板トピック</a></li>
-                                      <li><a href="/faq/"><span class="PI-set-blue PI-question-sign P5R"></span>よくある質問</a></li>
-                                      <li><a href="/price/"><span class="PI-set-blue PI-list P5R"></span>価格から選ぶ</a></li>
-                                    <li>
-              <a href="javascript:void(0)" class="clickTip" data-position="bottom-right"><strong class="FDNml BottomIconBlueSmall">業種から探す</strong></a>
-              <div class="tipContent tipWhite">
-                <ol class="UL-link solid2">
-                                      <li><a href="/sign-stand-for-cafe/"><span>カフェ</span></a></li>
-                                      <li><a href="/sign-stand-for-restaurant/"><span>飲食店</span></a></li>
-                                      <li><a href="/sign-stand-for-bar/"><span>居酒屋</span></a></li>
-                                      <li><a href="/sign-stand-for-ramen-shop/"><span>ラーメン屋</span></a></li>
-                                      <li><a href="/sign-stand-for-soba-udon/"><span>うどん屋・そば屋</span></a></li>
-                                      <li><a href="/sign-stand-for-real-estate/"><span>不動産</span></a></li>
-                                      <li><a href="/sign-stand-for-salon/"><span>美容室・エステ・ネイルサロン</span></a></li>
-                                      <li><a href="/sign-stand-for-clinic/"><span>歯医者・整体・接骨院・薬局</span></a></li>
-                                  </ol>
-              </div>
-            </li>
-                      </ul>
-        </div>
-        <!-- SP only -->
-        <div class=" PT-HiddenInline P20T">
-          <div class="">
-            <a href="javascript:void(0)" class="cursor-pointer FCGray4" style="border:none;"
-              data-remodal-target="modal_GMM">
-              <span class="ico ico_menu F25 M5R" aria-hidden="true"></span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <nav class="SP-Hidden P10B">
-      <ul class="P6S2UL GapM5 ">
-                  <li class="StatW3 PH-ShadowW R8 P5">
-            <a href="/a-frame-sign-stand-category/" class="Blk">
-              <span class="Blk Cnt">
-                <img src="/assets/images/lineup/a-frame-sign-stand.png?v=20260729" width="85" alt="A型看板" />
-              </span>
-              <span class="Blk FS85 Cnt P3B">A型看板</span>
-            </a>
-          </li>
-                  <li class="StatW3 PH-ShadowW R8 P5">
-            <a href="/writable-wood-sign-stand-category/" class="Blk">
-              <span class="Blk Cnt">
-                <img src="/assets/images/lineup/writable-wood-sign-stand.png?v=20260729" width="85" alt="手書き看板・木製看板" />
-              </span>
-              <span class="Blk FS85 Cnt P3B">手書き木製看板</span>
-            </a>
-          </li>
-                  <li class="StatW3 PH-ShadowW R8 P5">
-            <a href="/outdoor-sign-stand-category/" class="Blk">
-              <span class="Blk Cnt">
-                <img src="/assets/images/lineup/outdoor-sign-stand.png?v=20260729" width="85" alt="屋外看板" />
-              </span>
-              <span class="Blk FS85 Cnt P3B">屋外看板</span>
-            </a>
-          </li>
-                  <li class="StatW3 PH-ShadowW R8 P5">
-            <a href="/lighting-sign-stand-category/" class="Blk">
-              <span class="Blk Cnt">
-                <img src="/assets/images/lineup/lighting-sign-stand.png?v=20260729" width="85" alt="電飾看板" />
-              </span>
-              <span class="Blk FS85 Cnt P3B">電飾看板</span>
-            </a>
-          </li>
-                  <li class="StatW3 PH-ShadowW R8 P5">
-            <a href="/banner-sign-stand-category/" class="Blk">
-              <span class="Blk Cnt">
-                <img src="/assets/images/lineup/banner-sign-stand.png?v=20260729" width="85" alt="バナースタンド" />
-              </span>
-              <span class="Blk FS85 Cnt P3B">バナースタンド</span>
-            </a>
-          </li>
-                  <li class="StatW3 PH-ShadowW R8 P5">
-            <a href="/easel-sign-stand-category/" class="Blk">
-              <span class="Blk Cnt">
-                <img src="/assets/images/lineup/easel-sign-stand.png?v=20260729" width="85" alt="イーゼル" />
-              </span>
-              <span class="Blk FS85 Cnt P3B">イーゼル</span>
-            </a>
-          </li>
-                  <li class="StatW3 PH-ShadowW R8 P5">
-            <a href="/menu-sign-stand-category/" class="Blk">
-              <span class="Blk Cnt">
-                <img src="/assets/images/lineup/menu-sign-stand.png?v=20260729" width="85" alt="メニュースタンド型看板" />
-              </span>
-              <span class="Blk FS85 Cnt P3B">メニュースタンド</span>
-            </a>
-          </li>
-                  <li class="StatW3 PH-ShadowW R8 P5">
-            <a href="/pole-sign-stand-category/" class="Blk">
-              <span class="Blk Cnt">
-                <img src="/assets/images/lineup/pole-sign-stand.png?v=20260729" width="85" alt="ポールスタンド型看板" />
-              </span>
-              <span class="Blk FS85 Cnt P3B">ポールスタンド</span>
-            </a>
-          </li>
-                  <li class="StatW3 PH-ShadowW R8 P5">
-            <a href="/poster-sign-stand-category/" class="Blk">
-              <span class="Blk Cnt">
-                <img src="/assets/images/lineup/poster-sign-stand.png?v=20260729" width="85" alt="ポスタースタンド型看板" />
-              </span>
-              <span class="Blk FS85 Cnt P3B">ポスタースタンド</span>
-            </a>
-          </li>
-                  <li class="StatW3 PH-ShadowW R8 P5">
-            <a href="/panel-sign-stand-category/" class="Blk">
-              <span class="Blk Cnt">
-                <img src="/assets/images/lineup/panel-sign-stand.png?v=20260729" width="85" alt="パネルスタンド看板" />
-              </span>
-              <span class="Blk FS85 Cnt P3B">パネルスタンド</span>
-            </a>
-          </li>
-                  <li class="StatW3 PH-ShadowW R8 P5">
-            <a href="/option-parts-category/" class="Blk">
-              <span class="Blk Cnt">
-                <img src="/assets/images/lineup/option-parts.png?v=20260729" width="85" alt="オプションパーツ・関連商品" />
-              </span>
-              <span class="Blk FS85 Cnt P3B">関連商品</span>
-            </a>
-          </li>
-                  <li class="StatW3 PH-ShadowW R8 P5">
-            <a href="/sale/" class="Blk">
-              <span class="Blk Cnt">
-                <img src="/assets/images/lineup/sale.png?v=20260729" width="85" alt="セール商品" />
-              </span>
-              <span class="Blk FS85 Cnt P3B">セール商品</span>
-            </a>
-          </li>
-              </ul>
-    </nav>
-  </div>
-</header>  <main role="main">
-    <div class="StatC4 P10T P10B">
-      <div class="Wrapper1000">
-                <div class="BreadListSlider">
-      <ol class="FSS90" itemscope="itemscope" itemtype="https://schema.org/BreadcrumbList">
-                  <li itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem">
-            <a href="/" itemprop="item"><span itemprop="name">トップ</span></a>
-            <meta itemprop="position" content="1" />
-          </li>
-        
-                                          <li itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem">
-                            <a href="/image_resolution_checker/" class="FDUL" itemprop="item">
-                <span itemprop="name">写真の画像解像度 確認オンラインツール</span>
-              </a>
-                            <meta itemprop="position" content="2" />
-            </li>
-                        </ol>
-    </div>      </div>
     </div>
 
-    <div class="Wrapper1000 P P20T">
-      <h1 class=" SecSub2Tit">写真の画像解像度 確認オンラインツール(無料)</h1>
-      <p class="M3T FSS100">
-        jpgなどの写真の解像度（dpi）をオンラインで調べることができる確認ツール（フリーソフト）です。無料でお使いいただけます。印刷や看板のデザイン制作時に写真を使う場合、画像が荒れてしまわないか解像度が分かれば事前に確認することができます。
-      </p>
-    </div>
-    <div class="Wrapper1000 P20T">
-      <ul class="P2S1UL GapM10 P M15T">
-        <li class="StatW3 Cnt">
-          <form id="resolutionForm" enctype="multipart/form-data" method="post" action="check.html">
-            <fieldset>
-              <p class="Cnt M10T">お手元の写真の画像解像度を確認する</p>
-              <p class="Cnt P15B">対応画像フォーマットは、<span class="FCRed">jpg, png, gif</span> に限ります。</p>
+    <script>
+        let startTime = 0;
+        let elapsedTime = 0;
+        let timerInterval;
+        let isRunning = false;
 
-              <input type="file" id="fileInput" name="file" class="defaultInput FSS100 M15T" accept=".jpg,.jpeg,.png,.gif" />
+        function printTime(txt) {
+            document.getElementById("timer").innerHTML = txt;
+        }
 
-              <div class="M30T P15B">
-                <input type="submit" value="アップロード" class="blueBtn FSS120" />
-              </div>
-            </fieldset>
-          </form>
+        function timeToString(time) {
+            let diffInHrs = time / 3600000;
+            let hh = Math.floor(diffInHrs);
 
-        </li>
-        <li class="StatW3">
-          <p class="CL-SVG SVG-InfoB SVG-PosS">操作方法</p>
-          <ul class="LI-Num">
-            <li>左のフォームに解像度を確認したいファイルを選択します。</li>
-            <li>アップロードボタンを押します。</li>
-            <li>次の画面で写真の画像解像度や350dpi時の画像寸法などを確認していただけます。</li>
-          </ul>
-          <ul class="LI-Dis BL-D1-T BL-CCC M15T P15T">
-            <li>アップロード可能画像最大容量は、25MBになります。</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+            let diffInMin = (diffInHrs - hh) * 60;
+            let mm = Math.floor(diffInMin);
 
-    <div class="Wrapper1000 P M30T P20B">
-      <h2 class="SecSub3Tit CL-SVG SVG-InfoB SVG-PosS">画像解像度 確認オンラインツールの概要</h2>
-      <div class="G100 DispTbl">
-        <div class="PT-G50 PT-DispTblCell VATop PT-P30R">
-          <p class="M3T FSS100">手元にAdobe PhotoShopなどの専門の画像加工ソフトがなくてもその場で簡単にお手元の写真の画像解像度を調べることができる無料ツール（フリーソフト）です。</p>
-          <p class="M10T FSS100">画像加工ソフトがあると自分で画像解像度を計算しなくてもソフト上で確認できますが、お持ちでない場合、自分で計算するのは大変な作業になります。</p>
-          <p class="M10T FSS100">冊子のなどの紙媒体でも看板デザインでもレイアウトした写真の解像度が低すぎる場合、モザイクのように荒れてしまいます。せっかくのデザインも画像が荒れてしまうと出来栄えにも影響してしまいます。使用する写真素材の大きさと解像度を把握しておくことはレイアウトを行っていく上で大切な要素です。</p>
-          <p class="M10T FSS100">画像解像度確認オンラインツールは看板・印刷のデザイン制作に欠かせない写真の寸法・解像度をお調べするツールです。ぜひ、デザイン制作にお役立てください。</p>
-          <p class="M10T FSS100">どなた様でも無料でお使いいただけるサービスなので費用は掛かりません。ただし、無料サービスですので本ツールに起因したトラブルには一切の責任は負いかねますので予めご了承ください。詳しくは免責事項をご覧ください。</p>
-        </div>
-        <div class="PT-G50 PT-DispTblCell VATop SP-P25T">
-          <img src="/assets/images/image_resolution/image_resolution_thumbnail.png?v=20260729" alt="画像解像度 確認オンラインツール" class="Resp" />
-        </div>
-      </div>
+            let diffInSec = (diffInMin - mm) * 60;
+            let ss = Math.floor(diffInSec);
 
-      <p class="SecSub3Tit M30T">アップロード画像について</p>
-      <p class="FSS100 M5T">アップロードしていただける画像は以下の通りです。</p>
-      <ul class="PCSP3UL P M15T">
-        <li class="Cnt StatW">
-          JPG形式
-        </li>
-        <li class="Cnt StatW">
-          PNG形式
-        </li>
-        <li class="Cnt StatW">
-          GIF形式
-        </li>
-      </ul>
-      <p class="FCRed M15T">ファイル容量:25Mbyte以下</p>
-      <p class="M5T FSS90">ファイル容量25Mbyte以下の画像をアップロードいただけます。<br>※tiff、psd、pdfなどの形式には対応しておりません。</p>
-    </div>
+            let ms = Math.floor((diffInSec - ss) * 100);
 
-    <div class="StatW3 M30T">
-      <div class="Wrapper1000 P M20T P30T P20B">
-        <h3 class="SecSub3Tit CL-SVG SVG-InfoB SVG-PosS">画像解像度とは</h3>
-        <dl class="BL-DL-VLine Blue withM M10T">
-          <dt>色料の3原色</dt>
-          <dd>
-            <p>画像解像度とは、画像の精度を表す単位です。解像度が違う同じ寸法の写真があった場合、解像度が高い写真の方がより精度が高い写真になります。</p>
-            <p class="FSS100 M10T">精度が高いと言うことはより細部まで精密に描かれていると言うことになります。画像はピクセル（画素）と呼ばれる単位の集合体、ピクセルが集まって一枚の絵として表現されます。</p>
+            let formattedMM = mm.toString().padStart(2, "0");
+            let formattedSS = ss.toString().padStart(2, "0");
+            let formattedMS = ms.toString().padStart(2, "0");
 
-          </dd>
-        </dl>
-        <dl class="BL-DL-VLine Blue withM M30T P10T">
-          <dt>ピクセルってタイル！？</dt>
-          <dd>
-            <p class="FSS100 ">ピクセルはタイルをイメージすると分かりやすいです。</p>
-            <p class="FSS100 M10T">1色しか塗れないタイルを3列3段 計9枚渡されてお花畑を表現してくださいと言われても無理ですよね。ドット絵のようなモザイク画になってしまいますね。</p>
-            <p class="FSS100 M10T">でも今度は、1000分の1のタイルを9000枚渡されたらどうでしょうか。考えただけで疲れちゃいますが、どうでしょうか。 9枚のタイルで表現するお花畑と1000分の1のタイルを9000枚並べたお花畑、【寸法は同じですが】もっと細かく精度の高い描写ができるのではないでしょうか。</p>
-            <p class="FSS100 M10T">上記の例は少し大雑把ですが、この写真の精度を表すものが画像解像度になります。</p>
-          </dd>
-        </dl>
-        <dl class="BL-DL-VLine Blue withM M30T P10T">
-          <dt>画像解像度の単位</dt>
-          <dd>
-            <p class="FSS100 ">画像解像度に用いられる単位はppi（pixel per inch）やdpi（dot per inch）があります。</p>
-            <p class="FSS100 M10T">それぞれ1インチ当たりに含まれるピクセル（ドット）数を表しています。 100dpiの場合、1インチ当たりに100個のピクセルがある、言い換えればピクセルの大きさが1／100インチと言うことになります。</p>
-            <p class="FSS100 M10T">200dpiの場合、1インチ当たりに200個のピクセルがある、言い換えればピクセルの大きさが1／200インチと言うことになり、100dpiに比べピクセルの大きさが半分と小さくなります。小さくなるということはそれだけ画像の精度が高まるということなります。</p>
-          </dd>
-        </dl>
-      </div>
-    </div>
+            return `${formattedMM}:${formattedSS}:${formattedMS}`;
+        }
 
+        function startTimer() {
+            if (!isRunning) {
+                startTime = Date.now() - elapsedTime;
+                timerInterval = setInterval(function() {
+                    elapsedTime = Date.now() - startTime;
+                    printTime(timeToString(elapsedTime));
+                }, 10);
+                isRunning = true;
+            }
+        }
 
+        function stopTimer() {
+            if (isRunning) {
+                clearInterval(timerInterval);
+                isRunning = false;
+            }
+        }
 
-    <div class="StatW3 M30T">
-      <div class="Wrapper1000 P M20T P30T P20B">
-        <h3 class="SecSub3Tit CL-SVG SVG-InfoB SVG-PosS">看板における画像解像度の注意点</h3>
-        <p class="FSS100 M5T">パンフレット等の商業印刷の場合、350dpiが標準になっていますが、看板の場合、それほど高い解像度は必要ありません。以下がサインモールが推奨する看板デザインの際の推奨画像解像度です。</p>
+        function resetTimer() {
+            clearInterval(timerInterval);
+            printTime("00:00:00");
+            elapsedTime = 0;
+            isRunning = false;
+        }
+    </script>
 
-        <p class="CL-SVG SVG-InfoB SVG-PosS M15T">看板の種類別、推奨画像解像度</p>
-        <dl class="CL-STbl G3-7 M10T">
-          <dt class="StatLG">A型看板</dt>
-          <dd>200～250dpi</dd>
-          <dt class="StatLG">バナースタンド看板</dt>
-          <dd>150～200dpi</dd>
-          <dt class="StatLG">のぼり旗</dt>
-          <dd>100dpi程度</dd>
-          <dt class="StatLG">塔屋看板、野立て看板</dt>
-          <dd>100～150dpi程度<span class="Blk FSS90">（距離にもよる）</span></dd>
-        </dl>
-        <p class="M10T FSS100">※詳しくは、<a href="https://www.signmall.jp/blog/best-resolution-for-sign-board-image/"
-            class="FDUL">350DPI必要？看板制作の推奨解像度とは</a>も合わせてご覧ください。</p>
-        <h3 class="SecSub3Tit CL-SVG SVG-InfoB SVG-PosS M60T">高解像度は不要、でも寸法が大きいということは・・・</h3>
-        <p class="FSS100 M5T">印刷物の様に高い解像度が不要であっても看板は出力サイズが大きいので、実際には350dpiよりももっと高解像度の画像が必要になるケースもあります。</p>
-        <p class="FSS100 M15T">ポイントは以下の2つです。</p>
-        <p class="FSS100 M5T StatLG P10 FSS120 FCDarkBlue">写真を2倍に拡大すると画像解像度は2分の1になります。</p>
-        <p class="FSS100 M5T">例えば350dpiの写真を使用したA4チラシの場合、引き伸ばしてA0サイズで出力しようとすると、寸法が4倍になるので、350dpiの画像は87dpi程度まで落ちてしまい若干荒れてしまう心配が出てきてしまいます。</p>
-        <p class="FSS100 M15T">ではどの様にすれば良いのでしょうか？2つ目のポイントが、</p>
-        <p class="FSS100 M5T StatLG P10 FSS120 FCDarkBlue">お持ちの写真素材が100dpiの時に、または150dpi、200dpiの時にどのくらいの大きさで使用できるのかを把握しておくことが大切です。</p>
-        <p class="FSS100 M5T">写真の解像度は後から増やすことはできませんので（画像加工ソフトで数値上は増やすことができますがオススメできません）今お持ちの写真を看板デザインの中でどのくらい大きく使えるのかを事前に把握した上でレイアウトを考えれば写真が荒れてしまうという心配はなくなります。</p>
-      </div>
-    </div>
-
-
-
-
-
-
-
-
-    <div class="Wrapper1000 P P10B">
-      <p class="CL-SVG SVG-Attention SVG-PosS M30T FS80">免責事項：本ツールは簡易的に一般的な写真の解像度を算出するツールです。全てのファイルの解像度を正確に算出することは保証いたしません。あくまでも簡易的かつ試験的なツールです。本ツールに起因した責任は弊社は負いません。最終的には出力前に必ず写真の解像度を入稿先の印刷・出力店にご相談いただくか、Adobe PhotoShopなどの画像加工ソフトでご確認いただきますよう予めご了承ください。また、アップロードされた画像は削除されバックアップは行いません。また、アップロードされた画像を弊社で流用することは一切ございません。その他ご不明な点がございましたらお気軽にお問い合わせください。</p>
-    </div>
-  </main>
-  <script>
-    window.addEventListener('DOMContentLoaded', function() {
-      if (window.jQuery) {
-        $(function() {
-          // local script start here
-
-          // 解像度チェッカー
-          applyImageUploadValidator('#resolutionForm', '#fileInput');
-
-          // local script end here
-        });
-      }
-    });
-  </script>
-
-  
-<section class="Wrapper1000 P M30T M30B P15T">
-  <div class="WrapperP M20B">
-    <h2 class="SecSub2Tit">サインモール 看板専門店一覧</h2>
-  </div>
-
-  <ul class="P4S2UL P GapM10 FS90">
-          <li class="StatW">
-        <a href="https://display-sign-stand.com" class=" M10T M10B G100 clearfix">
-          <span class="G100 DispTbl">
-            <span class="PT-DispTblCell VATop W40 P5R SP-M0auto Cnt">
-              <img src="https://cdn.signmall.jp/assets/images/satellite/logo-illust/display-sign-stand.png?v=20260729" width="34" height="60" alt="スタンド看板専門店" />
-            </span>
-            <span class="G100 PT-DispTblCell VATop">
-              <span class="Blk">スタンド看板専門店</span>
-              <span class="Blk M5T FS80 FCGray2">スタンド看板の専門店。A型看板、バナースタンド、イーゼル、ポスタースタンドなど豊富に。</span>
-            </span>
-          </span>
-        </a>
-      </li>
-          <li class="StatW">
-        <a href="https://banner-sign-stand.com" class=" M10T M10B G100 clearfix">
-          <span class="G100 DispTbl">
-            <span class="PT-DispTblCell VATop W40 P5R SP-M0auto Cnt">
-              <img src="https://cdn.signmall.jp/assets/images/satellite/logo-illust/banner-sign-stand.png?v=20260729" width="34" height="60" alt="バナースタンド専門店" />
-            </span>
-            <span class="G100 PT-DispTblCell VATop">
-              <span class="Blk">バナースタンド専門店</span>
-              <span class="Blk M5T FS80 FCGray2">大きな表示面が特徴。屋内・屋外用、ロールアップ式やX型など豊富に。印刷面製作もOK!</span>
-            </span>
-          </span>
-        </a>
-      </li>
-          <li class="StatW">
-        <a href="https://a-frame-sign-stand.com" class=" M10T M10B G100 clearfix">
-          <span class="G100 DispTbl">
-            <span class="PT-DispTblCell VATop W40 P5R SP-M0auto Cnt">
-              <img src="https://cdn.signmall.jp/assets/images/satellite/logo-illust/a-frame-sign-stand.png?v=20260729" width="34" height="60" alt="A型看板専門店" />
-            </span>
-            <span class="G100 PT-DispTblCell VATop">
-              <span class="Blk">A型看板専門店</span>
-              <span class="Blk M5T FS80 FCGray2">Aの字型の定番スタンド看板。飲食店・店舗にオススメ！</span>
-            </span>
-          </span>
-        </a>
-      </li>
-          <li class="StatW">
-        <a href="https://lighting-sign-stand.com" class=" M10T M10B G100 clearfix">
-          <span class="G100 DispTbl">
-            <span class="PT-DispTblCell VATop W40 P5R SP-M0auto Cnt">
-              <img src="https://cdn.signmall.jp/assets/images/satellite/logo-illust/lighting-sign-stand.png?v=20260729" width="34" height="60" alt="電飾スタンド看板専門店" />
-            </span>
-            <span class="G100 PT-DispTblCell VATop">
-              <span class="Blk">電飾スタンド看板専門店</span>
-              <span class="Blk M5T FS80 FCGray2">電気で光るスタンド式電飾看板。飲食店・店舗に！</span>
-            </span>
-          </span>
-        </a>
-      </li>
-          <li class="StatW">
-        <a href="https://parking-sign.com" class=" M10T M10B G100 clearfix">
-          <span class="G100 DispTbl">
-            <span class="PT-DispTblCell VATop W40 P5R SP-M0auto Cnt">
-              <img src="https://cdn.signmall.jp/assets/images/satellite/logo-illust/parking-sign.png?v=20260729" width="34" height="60" alt="駐車場看板専門店" />
-            </span>
-            <span class="G100 PT-DispTblCell VATop">
-              <span class="Blk">駐車場看板専門店</span>
-              <span class="Blk M5T FS80 FCGray2">駐車場で役立つ看板・標識の専門店。駐輪場看板や駐車禁止も。</span>
-            </span>
-          </span>
-        </a>
-      </li>
-          <li class="StatW">
-        <a href="https://pole-sign-stand.com" class=" M10T M10B G100 clearfix">
-          <span class="G100 DispTbl">
-            <span class="PT-DispTblCell VATop W40 P5R SP-M0auto Cnt">
-              <img src="https://cdn.signmall.jp/assets/images/satellite/logo-illust/pole-sign-stand.png?v=20260729" width="34" height="60" alt="ポールスタンド専門店" />
-            </span>
-            <span class="G100 PT-DispTblCell VATop">
-              <span class="Blk">ポールスタンド専門店</span>
-              <span class="Blk M5T FS80 FCGray2">施設やオフィス、店舗で役立つ屋内用サインスタンドです。</span>
-            </span>
-          </span>
-        </a>
-      </li>
-          <li class="StatW">
-        <a href="https://wood-sign-stand.com" class=" M10T M10B G100 clearfix">
-          <span class="G100 DispTbl">
-            <span class="PT-DispTblCell VATop W40 P5R SP-M0auto Cnt">
-              <img src="https://cdn.signmall.jp/assets/images/satellite/logo-illust/wood-sign-stand.png?v=20260729" width="34" height="60" alt="木製看板専門店" />
-            </span>
-            <span class="G100 PT-DispTblCell VATop">
-              <span class="Blk">木製看板専門店</span>
-              <span class="Blk M5T FS80 FCGray2">手書きができる黒板看板おしゃれな看板で飲食店にオススメ！</span>
-            </span>
-          </span>
-        </a>
-      </li>
-      </ul>
-</section><footer class="CLR StatC4 BLS1TG2">
-  <div class="Wrapper1400 P">
-    <p class="FSS100 P20T">商品やご注文方法などご不明な点やご相談はお気軽にお問い合わせください。</p>
-    <p class="CL-SVG SVG-InfoB SVG-PosS FSS90">お電話の際は、「スタンド看板専門店」を見ている旨をお伝えいただけるとお問い合わせがスムーズに進みます。</p>
-    <ul class="P4S1UL GapM10 P ">
-      <li class="StatW3">
-        <p class="FSS100">お問い合せ電話番号</p>
-        <p class="PT-FS160 SP-FS120 FDArial FCDarkBlue M5T">03-6304-1350</p>
-        <p class="FS80 M5T">(平日10-12時/13-17時)</p>
-      </li>
-      <li class="StatW3">
-        <p class="FSS100">お問い合せFAX番号</p>
-        <p class="PT-FS160 SP-FS120 FDArial FCDarkBlue M5T">03-6304-1365</p>
-      </li>
-      <li class="StatW3">
-        <p class="FSS100">代表メールアドレス</p>
-        <p class="FSS200 FDArial FCDarkBlue M15T">
-          <img src="https://cdn.signmall.jp/assets/images/icon/mailaddress.svg?v=20260729" alt="メールアドレス" width="200" height="30" class="Resp" />
-        </p>
-      </li>
-      <li class="StatW3">
-        <p class="FSS100 ">パソコン・スマホからのお問い合わせ</p>
-        <a href="https://www.signmall.jp/cmn/inquiry/" class=" activeBtn NextIconBlueSmall R5 Blk FSS110 M10T">
-          <span class="Blk ">お問い合わせ<span class="SP-HiddenInline">フォーム</span></span>
-        </a>
-      </li>
-    </ul>
-  </div>
-
-  <div class="Wrapper1400 P P15T">
-    <div class="G100 DispTbl">
-      <div class="P-DispTblCell VATop W220 M0auto P25T Cnt">
-        <a href="/" class="LH100 FS90">
-          <img src="https://cdn.signmall.jp/assets/images/satellite/logo/display-sign-stand.png?v=20260729" width="300" height="88" class="footerLogoImg" alt="スタンド看板専門店" />
-          <span class="Blk Ellipsis Cnt M5T FCGray1">スタンド看板専門店</span>
-        </a>
-      </div>
-      <div class="G100 P-DispTblCell VATop ">
-        <div class="G100 DispTbl">
-          <div class="PT-G65 PT-DispTblCell VAMid P25T">
-            <p class="FSS120 Ellipsis">株式会社 サインモール<a href="https://www.signmall.co.jp/" target="_blank" class="M5L FDNml FS80 FDUL">会社案内HP</a></p>
-            <p class="M5T FSS100">(インボイス登録番号:T1010001101712)</p>
-            <p class="M5T FSS100">〒170-0005 東京都豊島区南大塚3-37-5 大塚台パークサイドビル5階</p>
-
-          </div>
-          <div class="PT-G35 PT-DispTblCell VAMid P25T">
-            <div class="G100 DispTbl">
-              <div class="DispTblCell VATop W100">
-                <img src="https://cdn.signmall.jp/assets/images/icon/iso-logo-signmall.png?v=20260729" width="96" height="66" alt="ISO:9001認証マーク" />
-              </div>
-              <div class="G100 DispTblCell VATop">
-                <p class="FSS90">認証No.7957522453</p>
-                <p class="FSS90 LH120 M5T">サインモールは品質マネジメントシステムの国際規格ISO9001を取得しております</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <p class="StatDarkGray FCWhite FSS80 Cnt M10T">Copyright &copy; signmall All Rights Reserved.</p>
-</footer>
-
-
-<!--===========================================================
-[MODAL] ヘッダーグローバルハンバーガーメニュー
-==============================================================-->
-<div class="remodal-bg" id="GMMWrapper">
-  <div class="remodal Lft " data-remodal-id="modal_GMM">
-    <div class="P10">
-      <a href="javascript:void(0)" data-remodal-action="close"><span class="ico ico_close F25 M5R" aria-hidden="true"></span>
-</a>
-    </div>
-
-    <p class="StatGray5 P5 FCWhite FS90 ">看板カテゴリー</p><ul class="PCSP2UL P GapM5">  <li class="StatW">
-    <a href="/a-frame-sign-stand-category/">
-      <span class="Blk Cnt">
-        <img src="/assets/images/lineup/a-frame-sign-stand.png?v=20260729" width="85" alt="A型看板" />
-      </span>
-      <span class="Blk FS85 Cnt">A型看板</span>
-    </a>
-  </li>  <li class="StatW">
-    <a href="/writable-wood-sign-stand-category/">
-      <span class="Blk Cnt">
-        <img src="/assets/images/lineup/writable-wood-sign-stand.png?v=20260729" width="85" alt="手書き木製看板" />
-      </span>
-      <span class="Blk FS85 Cnt">手書き木製看板</span>
-    </a>
-  </li>  <li class="StatW">
-    <a href="/outdoor-sign-stand-category/">
-      <span class="Blk Cnt">
-        <img src="/assets/images/lineup/outdoor-sign-stand.png?v=20260729" width="85" alt="屋外看板" />
-      </span>
-      <span class="Blk FS85 Cnt">屋外看板</span>
-    </a>
-  </li>  <li class="StatW">
-    <a href="/lighting-sign-stand-category/">
-      <span class="Blk Cnt">
-        <img src="/assets/images/lineup/lighting-sign-stand.png?v=20260729" width="85" alt="電飾看板" />
-      </span>
-      <span class="Blk FS85 Cnt">電飾看板</span>
-    </a>
-  </li>  <li class="StatW">
-    <a href="/banner-sign-stand-category/">
-      <span class="Blk Cnt">
-        <img src="/assets/images/lineup/banner-sign-stand.png?v=20260729" width="85" alt="バナースタンド" />
-      </span>
-      <span class="Blk FS85 Cnt">バナースタンド</span>
-    </a>
-  </li>  <li class="StatW">
-    <a href="/easel-sign-stand-category/">
-      <span class="Blk Cnt">
-        <img src="/assets/images/lineup/easel-sign-stand.png?v=20260729" width="85" alt="イーゼル" />
-      </span>
-      <span class="Blk FS85 Cnt">イーゼル</span>
-    </a>
-  </li>  <li class="StatW">
-    <a href="/menu-sign-stand-category/">
-      <span class="Blk Cnt">
-        <img src="/assets/images/lineup/menu-sign-stand.png?v=20260729" width="85" alt="メニュースタンド" />
-      </span>
-      <span class="Blk FS85 Cnt">メニュースタンド</span>
-    </a>
-  </li>  <li class="StatW">
-    <a href="/pole-sign-stand-category/">
-      <span class="Blk Cnt">
-        <img src="/assets/images/lineup/pole-sign-stand.png?v=20260729" width="85" alt="ポールスタンド" />
-      </span>
-      <span class="Blk FS85 Cnt">ポールスタンド</span>
-    </a>
-  </li>  <li class="StatW">
-    <a href="/poster-sign-stand-category/">
-      <span class="Blk Cnt">
-        <img src="/assets/images/lineup/poster-sign-stand.png?v=20260729" width="85" alt="ポスタースタンド" />
-      </span>
-      <span class="Blk FS85 Cnt">ポスタースタンド</span>
-    </a>
-  </li>  <li class="StatW">
-    <a href="/panel-sign-stand-category/">
-      <span class="Blk Cnt">
-        <img src="/assets/images/lineup/panel-sign-stand.png?v=20260729" width="85" alt="パネルスタンド" />
-      </span>
-      <span class="Blk FS85 Cnt">パネルスタンド</span>
-    </a>
-  </li>  <li class="StatW">
-    <a href="/option-parts-category/">
-      <span class="Blk Cnt">
-        <img src="/assets/images/lineup/option-parts.png?v=20260729" width="85" alt="関連商品" />
-      </span>
-      <span class="Blk FS85 Cnt">関連商品</span>
-    </a>
-  </li>  <li class="StatW">
-    <a href="/sale/">
-      <span class="Blk Cnt">
-        <img src="/assets/images/lineup/sale.png?v=20260729" width="85" alt="セール商品" />
-      </span>
-      <span class="Blk FS85 Cnt">セール商品</span>
-    </a>
-  </li></ul><p class="StatGray5 P5 FCWhite FS90 M25T">業種から選ぶ</p><ul class="UL-link solid2 FS90"><li><a href="/sign-stand-for-cafe/"><span>カフェ向け看板</span></a></li><li><a href="/sign-stand-for-restaurant/"><span>飲食店向け看板</span></a></li><li><a href="/sign-stand-for-bar/"><span>居酒屋向け看板</span></a></li><li><a href="/sign-stand-for-ramen-shop/"><span>ラーメン屋向け看板</span></a></li><li><a href="/sign-stand-for-soba-udon/"><span>うどん屋・そば屋向け看板</span></a></li><li><a href="/sign-stand-for-real-estate/"><span>不動産向け看板</span></a></li><li><a href="/sign-stand-for-salon/"><span>美容室・エステ・ネイルサロン向け看板</span></a></li><li><a href="/sign-stand-for-clinic/"><span>歯医者・整体・接骨院・薬局向け看板</span></a></li></ul><p class="StatGray5 P5 FCWhite FS90 M25T">無料ツール</p><ul class="UL-link solid2 FS90"><li><a href="/rgb_cmyk_converter/"><span class="PI-picture PI-set-blue M5R"></span>RGB→CMYK変換</a></li><li><a href="/qrcode_generator/"><span class="PI-picture PI-set-blue M5R"></span>QRコード作成</a></li><li><a href="/image_resolution_checker/"><span class="PI-picture PI-set-blue M5R"></span>解像度確認</a></li></ul><p class="StatGray5 P5 FCWhite FS90 M25T">メニュー</p><ul class="UL-link solid2 FS90"><li><a href="/topic/">看板トピック</a></li><li><a href="/faq/">よくある質問</a></li><li><a href="/price/">価格から選ぶ</a></li></ul>
-    <p class="StatGray5 P5 FCWhite FS90 M25T">専門店のご紹介</p>
-    <ul class="UL-link solid2 FS90">
-              <li>
-          <a href="https://display-sign-stand.com" class=" M10T M10B G100 clearfix">
-            <span class="G100 DispTbl">
-              <span class="DispTblCell VAMid W40 P5R">
-                <img src="https://cdn.signmall.jp/assets/images/satellite/logo-illust/display-sign-stand.png?v=20260729" width="34" height="60" alt="スタンド看板専門店" />
-              </span>
-              <span class="G100 DispTblCell VAMid">
-                <span class="Blk">スタンド看板専門店</span>
-                <span class="Blk M5T FS80 FCGray2">スタンド看板の専門店。A型看板、バナースタンド、イーゼル、ポスタースタンドなど豊富に。</span>
-              </span>
-            </span>
-          </a>
-        </li>
-              <li>
-          <a href="https://banner-sign-stand.com" class=" M10T M10B G100 clearfix">
-            <span class="G100 DispTbl">
-              <span class="DispTblCell VAMid W40 P5R">
-                <img src="https://cdn.signmall.jp/assets/images/satellite/logo-illust/banner-sign-stand.png?v=20260729" width="34" height="60" alt="バナースタンド専門店" />
-              </span>
-              <span class="G100 DispTblCell VAMid">
-                <span class="Blk">バナースタンド専門店</span>
-                <span class="Blk M5T FS80 FCGray2">大きな表示面が特徴。屋内・屋外用、ロールアップ式やX型など豊富に。印刷面製作もOK!</span>
-              </span>
-            </span>
-          </a>
-        </li>
-              <li>
-          <a href="https://a-frame-sign-stand.com" class=" M10T M10B G100 clearfix">
-            <span class="G100 DispTbl">
-              <span class="DispTblCell VAMid W40 P5R">
-                <img src="https://cdn.signmall.jp/assets/images/satellite/logo-illust/a-frame-sign-stand.png?v=20260729" width="34" height="60" alt="A型看板専門店" />
-              </span>
-              <span class="G100 DispTblCell VAMid">
-                <span class="Blk">A型看板専門店</span>
-                <span class="Blk M5T FS80 FCGray2">Aの字型の定番スタンド看板。飲食店・店舗にオススメ！</span>
-              </span>
-            </span>
-          </a>
-        </li>
-              <li>
-          <a href="https://lighting-sign-stand.com" class=" M10T M10B G100 clearfix">
-            <span class="G100 DispTbl">
-              <span class="DispTblCell VAMid W40 P5R">
-                <img src="https://cdn.signmall.jp/assets/images/satellite/logo-illust/lighting-sign-stand.png?v=20260729" width="34" height="60" alt="電飾スタンド看板専門店" />
-              </span>
-              <span class="G100 DispTblCell VAMid">
-                <span class="Blk">電飾スタンド看板専門店</span>
-                <span class="Blk M5T FS80 FCGray2">電気で光るスタンド式電飾看板。飲食店・店舗に！</span>
-              </span>
-            </span>
-          </a>
-        </li>
-              <li>
-          <a href="https://parking-sign.com" class=" M10T M10B G100 clearfix">
-            <span class="G100 DispTbl">
-              <span class="DispTblCell VAMid W40 P5R">
-                <img src="https://cdn.signmall.jp/assets/images/satellite/logo-illust/parking-sign.png?v=20260729" width="34" height="60" alt="駐車場看板専門店" />
-              </span>
-              <span class="G100 DispTblCell VAMid">
-                <span class="Blk">駐車場看板専門店</span>
-                <span class="Blk M5T FS80 FCGray2">駐車場で役立つ看板・標識の専門店。駐輪場看板や駐車禁止も。</span>
-              </span>
-            </span>
-          </a>
-        </li>
-              <li>
-          <a href="https://pole-sign-stand.com" class=" M10T M10B G100 clearfix">
-            <span class="G100 DispTbl">
-              <span class="DispTblCell VAMid W40 P5R">
-                <img src="https://cdn.signmall.jp/assets/images/satellite/logo-illust/pole-sign-stand.png?v=20260729" width="34" height="60" alt="ポールスタンド専門店" />
-              </span>
-              <span class="G100 DispTblCell VAMid">
-                <span class="Blk">ポールスタンド専門店</span>
-                <span class="Blk M5T FS80 FCGray2">施設やオフィス、店舗で役立つ屋内用サインスタンドです。</span>
-              </span>
-            </span>
-          </a>
-        </li>
-              <li>
-          <a href="https://wood-sign-stand.com" class=" M10T M10B G100 clearfix">
-            <span class="G100 DispTbl">
-              <span class="DispTblCell VAMid W40 P5R">
-                <img src="https://cdn.signmall.jp/assets/images/satellite/logo-illust/wood-sign-stand.png?v=20260729" width="34" height="60" alt="木製看板専門店" />
-              </span>
-              <span class="G100 DispTblCell VAMid">
-                <span class="Blk">木製看板専門店</span>
-                <span class="Blk M5T FS80 FCGray2">手書きができる黒板看板おしゃれな看板で飲食店にオススメ！</span>
-              </span>
-            </span>
-          </a>
-        </li>
-          </ul>
-
-    <p class="StatGray5 P5 FCWhite FS90 M25T">グループサイト</p>
-    <ul class="UL-link solid2 FS90">
-      <li class="P10L">
-        <a href="https://www.signmall.jp/" target="_blank">看板通販のサインモール</a>
-      </li>
-      <li class="P10L">
-        <a href="https://www.wagocoro.com/" target="_blank">和食器の和心</a>
-      </li>
-      <li class="P10L">
-        <a href="https://www.anzen-store.com/" target="_blank">安全用品ストア</a>
-      </li>
-    </ul>
-  </div>
-</div>
-
-
-<div id="page-top"><a href="#Head"></a></div>
-
-<script>
-  window.addEventListener('DOMContentLoaded', function() {
-    if (window.jQuery) {
-      $(function() {
-        // inline script start
-
-        //======================
-        // ヘッダーグローバルハンバーガーメニュー
-        //======================
-        var $wrapper = $('[data-remodal-id=modal_GMM]').parent();
-        $($wrapper).attr("id", 'GMMWrapper');
-        var remodal = $wrapper.children().remodal();
-
-        // inline script end
-      });
-    }
-  });
-</script></body>
-
+</body>
 </html>
